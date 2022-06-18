@@ -13,7 +13,7 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
-lines = LOAD 'repo/pregunta_01/data.tsv' AS (line:CHARARRAY);
+lines = LOAD 'data.tsv' AS (line:CHARARRAY);
 
 words = FOREACH lines GENERATE FLATTEN(TOKENIZE(line)) AS word;
 

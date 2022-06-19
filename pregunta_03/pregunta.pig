@@ -11,7 +11,7 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-lines = LOAD 'repo/pregunta_01/data.tsv' USING PigStorage('\t') AS (line:CHARARRAY, f2:CHARARRAY, f3:INT);
+lines = LOAD 'data.tsv' USING PigStorage('\t') AS (line:CHARARRAY, f2:CHARARRAY, f3:INT);
 column  = FOREACH lines GENERATE f3;
 sort = ORDER column by f3;
 result = LIMIT sort 5;

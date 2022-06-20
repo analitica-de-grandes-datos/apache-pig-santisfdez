@@ -16,7 +16,7 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-lines = LOAD 'repo/pregunta_07/data.tsv' USING PigStorage('\t') AS (f1:CHARARRAY, f2:CHARARRAY, f3:CHARARRAY);
+lines = LOAD 'data.tsv' USING PigStorage('\t') AS (f1:CHARARRAY, f2:CHARARRAY, f3:CHARARRAY);
 reemplazo = FOREACH lines GENERATE REPLACE(REPLACE(f2,'(\\{)',''),'(\\})','') AS col2,REPLACE(REPLACE(f3,'(\\[)',''),'(\\])','') AS col3;
 subtuplas = FOREACH reemplazo GENERATE FLATTEN(TOKENIZE(col2)) As word1, col3;
 subtuplas2 = FOREACH subtuplas GENERATE word1 , FLATTEN(TOKENIZE(col3)) As word2;

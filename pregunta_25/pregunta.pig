@@ -21,4 +21,4 @@ $ pig -x local -f pregunta.pig
 */
 lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:CHARARRAY, f2:CHARARRAY, f3:CHARARRAY, f4:CHARARRAY, f5:CHARARRAY);
 resultado = FOREACH lines GENERATE f2, INDEXOF(f2, 'a', 0);
-STORE orden INTO 'output' USING PigStorage(',');
+STORE resultado INTO 'output' USING PigStorage(',');

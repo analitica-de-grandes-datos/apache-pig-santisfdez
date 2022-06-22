@@ -13,4 +13,9 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-
+lines = LOAD 'data.tsv' USING PigStorage('\t') AS (f1:CHARARRAY, f2:CHARARRAY, f3: CHARARRAY);
+reemplazo = FOREACH lines GENERATE REPLACE(REPLACE(REPLACE(f3, '(\\#[0-9]+)', ''),'(\\[)',''),'(\\])','') AS word;
+words = FOREACH reemplazo GENERATE FLATTEN(TOKENIZE(word)) AS letter;
+grouped = GROUP words BY letter;
+wordcount = FOREACH grouped GENERATE group, COUNT(words);
+STORE wordcount INTO 'output' USING PigStorage(',');

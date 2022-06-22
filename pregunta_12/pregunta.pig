@@ -26,4 +26,8 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-
+lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:CHARARRAY, f2:CHARARRAY, f3:CHARARRAY);
+columna = FOREACH lines GENERATE f3;
+resultado = FOREACH columna GENERATE REGEX_EXTRACT(f3, '[DEFGHIJK].*',0) AS word;
+orden = FILTER resultado BY (word != '');
+STORE orden INTO 'output' USING PigStorage(',');

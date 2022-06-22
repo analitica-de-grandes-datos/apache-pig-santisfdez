@@ -33,4 +33,13 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:CHARARRAY, f2:CHARARRAY, f3:CHARARRAY, f4:CHARARRAY, f5:CHARARRAY);
+origen = FOREACH lines GENERATE ToDate(f4, 'yyyy-MM-dd') AS datos;
+selected_data = FOREACH origen GENERATE ToString(datos,'yyyy-MM-dd') AS date, ToString(datos,'dd') AS dia, GetDay(datos) AS day, REPLACE(LOWER(ToString(datos, 'EEE')), 'mon', 'lun') AS dayname, REPLACE(LOWER(ToString(datos, 'EEEE')), 'monday', 'lunes') AS fullday;
+selected_data = FOREACH selected_data GENERATE date, dia, day, REPLACE(dayname, 'thu', 'jue') AS dayname, REPLACE(fullday, 'thursday', 'jueves') AS fullday;
+selected_data = FOREACH selected_data GENERATE date, dia, day, REPLACE(dayname, 'sun', 'dom') AS dayname, REPLACE(fullday, 'sunday', 'domingo') AS fullday;
+selected_data = FOREACH selected_data GENERATE date, dia, day, REPLACE(dayname, 'wed', 'mie') AS dayname, REPLACE(fullday, 'wednesday', 'miercoles') AS fullday;
+selected_data = FOREACH selected_data GENERATE date, dia, day, REPLACE(dayname, 'fri', 'vie') AS dayname, REPLACE(fullday, 'friday', 'viernes') AS fullday;
+selected_data = FOREACH selected_data GENERATE date, dia, day, REPLACE(dayname, 'tue', 'mar') AS dayname, REPLACE(fullday, 'tuesday', 'martes') AS fullday;
 
+STORE selected_data INTO 'output' USING PigStorage(',');
